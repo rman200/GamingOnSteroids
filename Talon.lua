@@ -130,7 +130,9 @@ function Talon:Clear()
 end
 
 function Talon:Flee()
-	Control.CastSpell(HK_E, cursorPos)
+	if Game.IsChatOpen() == false then
+		Control.CastSpell(HK_E, cursorPos)
+	end
 	
 end
 
