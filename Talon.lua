@@ -40,26 +40,28 @@ function Talon:Tick()
 end
 
 function Talon:Combo()
-	if _G.SDK.TargetSelector:GetTarget(550) == nil then return end
+	if _G.SDK.TargetSelector:GetTarget(1000) == nil then return end
+	self:DisableAtk()
+	self:EnableAtk()
 	local targ = _G.SDK.TargetSelector:GetTarget(550)
-	if self.Menu.Combo.UseR:Value() and Ready(_R) then
-		if EnemiesAround(myHero.pos, 1000) >= 2 then
+	if self.Menu.Combo.UseR:Value() and Ready(_R) and not self:HasBuff(myHero, "TalonRStealth") then
+		if EnemiesAround(myHero.pos, 1000) >= self.Menu.Combo.MinR:Value() then
     		Control.CastSpell(HK_R)
     	end
     end
-	if self.Menu.Combo.UseQ:Value() and Ready(_Q) then
+	if self.Menu.Combo.UseQ:Value() and Ready(_Q) and targ ~= nil then
 		Control.CastSpell(HK_Q, targ)
 	end	
-	if self.Menu.Combo.UseW:Value() and Ready(_W) then														--Combo
+	if self.Menu.Combo.UseW:Value() and Ready(_W) and targ ~= nil then														--Combo
     	local Cpred = targ:GetPrediction(W.speed, 0.25 + Game.Latency()/1000)
     	Control.CastSpell(HK_W, Cpred)
     end
     
 end
 function Talon:Harass()
-	if _G.SDK.TargetSelector:GetTarget(W.range) == nil then return end
+	if _G.SDK.TargetSelector:GetTarget(W.range + 100) == nil then return end
 	if self.Menu.Harass.UseW:Value() then
-		local Wtarg = _G.SDK.TargetSelector:GetTarget(W.range)												--Harass
+		local Wtarg = _G.SDK.TargetSelector:GetTarget(W.range + 100)												--Harass
 		local Hpred = Wtarg:GetPrediction(W.speed, 0.25 + Game.Latency()/1000)
 		Control.CastSpell(HK_W, Hpred)
 	end
@@ -89,6 +91,16 @@ end
 
 function Talon:IsValidTarget(unit,range) 
 	return unit ~= nil and unit.valid and unit.visible and not unit.dead and unit.isTargetable and not unit.isImmortal 
+end
+
+function Talon:HasBuff(unit, buffname)
+	for i = 0, unit.buffCount do
+		local buff = unit:GetBuff(i)
+		if buff.name == buffname and buff.count > 0 then 
+			return true
+		end
+	end
+	return false
 end
 
 function CountEnemyMinions(range)
@@ -159,6 +171,7 @@ function Talon:LoadMenu()
 	self.Menu.Combo:MenuElement({id = "UseQ", name = "[Q] Noxian Diplomacy", value = true, leftIcon = Icons.Q})
 	self.Menu.Combo:MenuElement({id = "UseW", name = "[W] Rake", value = true, leftIcon = Icons.W})
 	self.Menu.Combo:MenuElement({id = "UseR", name = "[R] Shadow Assault", value = true, leftIcon = Icons.R})
+	self.Menu.Combo:MenuElement({id = "MinR", name = "Min Enemies to use R", value = 2, min = 1, max = Game.HeroCount()})
 	--HarassMenu
 	self.Menu:MenuElement({type = MENU, id = "Harass", name = "Harass"})
 	self.Menu.Harass:MenuElement({id = "UseW", name = "[W] Rake", value = true, leftIcon = Icons.W})
@@ -174,9 +187,6 @@ function Talon:LoadMenu()
 	self.Menu:MenuElement({type = MENU, id = "Lasthit", name = "Lasthit"})
 	self.Menu.Lasthit:MenuElement({id = "UseQ", name = "[Q] Noxian Diplomacy", value = true, leftIcon = Icons.Q})
 	self.Menu.Lasthit:MenuElement({id = "Mana", name = "Min Mana to Lasthit (%)", value = 65, min = 0, max = 100})
-	--KS Menu
-	self.Menu:MenuElement({type = MENU, id = "Killsteal", name = "Killsteal"})
-	self.Menu.Killsteal:MenuElement({id = "UseR", name = "[R] Shadow Assault", value = true, leftIcon = Icons.R})
 	--Drawing Menu
 	self.Menu:MenuElement({type = MENU, id = "Drawing", name = "Drawings"})
 	self.Menu.Drawing:MenuElement({id = "DrawQ", name = "Draw [Q] Range", value = true, leftIcon = Icons.Q})
@@ -187,10 +197,10 @@ end
 function Talon:Draw()
 	if myHero.dead then return end
 	if(self.Menu.Drawing.DrawW:Value())then
-		Draw.Circle(myHero, W.range, 3, Draw.Color(255, 225, 255, 10))
+		Draw.Circle(myHero, W.range + 100, 3, Draw.Color(255, 225, 255, 10))
 	end 																								--OnDraw
 	if(self.Menu.Drawing.DrawQ:Value())then
-		Draw.Circle(myHero, Q.range, 3, Draw.Color(225, 225, 0, 10))
+		Draw.Circle(myHero, 550, 3, Draw.Color(225, 225, 0, 10))
 	end
 end
 function EnemiesAround(pos, range)
@@ -199,10 +209,23 @@ function EnemiesAround(pos, range)
         local Hero = Game.Hero(i)      
         if not Hero.dead and Hero.isEnemy and Hero.pos:DistanceTo(pos, Hero.pos) < range then
             Count = Count + 1
-            PrintChat(Count)
         end
     end
     return Count
+end
+local atk = 1
+function Talon:DisableAtk()
+	if (self:HasBuff(myHero, "TalonRStealth")) and atk == 1 then
+		_G.SDK.Orbwalker:SetAttack(false)
+		atk = 0
+	end
+end
+
+function Talon:EnableAtk()
+	if not (self:HasBuff(myHero, "TalonRStealth")) and atk == 0 then
+		_G.SDK.Orbwalker:SetAttack(true)
+		atk = 1
+	end
 end
 
 
