@@ -43,11 +43,9 @@ function Talon:Combo()
 	if _G.SDK.TargetSelector:GetTarget(550) == nil then return end
 	local targ = _G.SDK.TargetSelector:GetTarget(550)
 	if self.Menu.Combo.UseR:Value() and Ready(_R) then
-		PrintChat(EnemiesAround(myHero.pos, 1000))
 		if EnemiesAround(myHero.pos, 1000) >= 2 then
     		Control.CastSpell(HK_R)
-    		PrintChat("funcionando")
-		end
+    	end
     end
 	if self.Menu.Combo.UseQ:Value() and Ready(_Q) then
 		Control.CastSpell(HK_Q, targ)
