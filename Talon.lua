@@ -60,7 +60,7 @@ function Talon:Combo()
 end
 function Talon:Harass()
 	if _G.SDK.TargetSelector:GetTarget(W.range + 100) == nil then return end
-	if self.Menu.Harass.UseW:Value() then
+	if self.Menu.Harass.UseW:Value() and (myHero.mana/myHero.maxMana >= self.Menu.Harass.Mana:Value() / 100 ) then
 		local Wtarg = _G.SDK.TargetSelector:GetTarget(W.range + 100)												--Harass
 		local Hpred = Wtarg:GetPrediction(W.speed, 0.25 + Game.Latency()/1000)
 		Control.CastSpell(HK_W, Hpred)
@@ -171,7 +171,7 @@ function Talon:LoadMenu()
 	self.Menu.Combo:MenuElement({id = "UseQ", name = "[Q] Noxian Diplomacy", value = true, leftIcon = Icons.Q})
 	self.Menu.Combo:MenuElement({id = "UseW", name = "[W] Rake", value = true, leftIcon = Icons.W})
 	self.Menu.Combo:MenuElement({id = "UseR", name = "[R] Shadow Assault", value = true, leftIcon = Icons.R})
-	self.Menu.Combo:MenuElement({id = "MinR", name = "Min Enemies to use R", value = 2, min = 1, max = Game.HeroCount()})
+	self.Menu.Combo:MenuElement({id = "MinR", name = "Min Enemies to use R", value = 2, min = 1, max = 5})
 	--HarassMenu
 	self.Menu:MenuElement({type = MENU, id = "Harass", name = "Harass"})
 	self.Menu.Harass:MenuElement({id = "UseW", name = "[W] Rake", value = true, leftIcon = Icons.W})

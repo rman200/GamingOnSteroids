@@ -198,7 +198,7 @@ function Vladimir:LoadMenu()
 	self.Menu.Combo:MenuElement({id = "UseW", name = "[W] Sanguine Pool", value = true, leftIcon = Icons.Q})
 	self.Menu.Combo:MenuElement({id = "UseE", name = "[E] Tides of Blood", value = true, leftIcon = Icons.E})
 	self.Menu.Combo:MenuElement({id = "UseR", name = "[R] Hemoplague", value = true, leftIcon = Icons.R})
-	self.Menu.Combo:MenuElement({id = "MinR", name = "Min Enemies to use R", value = 2, min = 1, max = Game.HeroCount()})
+	self.Menu.Combo:MenuElement({id = "MinR", name = "Min Enemies to use R", value = 2, min = 1, max = 5})
 	--HarassMenu
 	self.Menu:MenuElement({type = MENU, id = "Harass", name = "Harass"})
 	self.Menu.Harass:MenuElement({id = "UseQ", name = "[Q] Transfusion", value = true, leftIcon = Icons.Q})
