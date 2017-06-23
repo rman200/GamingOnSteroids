@@ -71,20 +71,19 @@ function Talon:LastHit()
 		local level = myHero:GetSpellData(_Q).level	
   		for i = 1, Game.MinionCount() do
 			local minion = Game.Minion(i)
-			if  minion.team == 200 then
-				local Qdamage = (({60, 85, 110, 135, 160})[level] + myHero.bonusDamage)
-				if myHero.pos:DistanceTo(minion.pos) < 550 and self.Menu.Lasthit.UseQ:Value() and (myHero.mana/myHero.maxMana >= self.Menu.Lasthit.Mana:Value() / 100 ) and minion.isEnemy then
-					if Qdamage >= minion.health then
-						Control.CastSpell(HK_Q,minion)																																					--Last Hit
-					end
+			local Qdamage = (({60, 85, 110, 135, 160})[level] + myHero.bonusDamage)
+			if myHero.pos:DistanceTo(minion.pos) < 550 and self.Menu.Lasthit.UseQ:Value() and (myHero.mana/myHero.maxMana >= self.Menu.Lasthit.Mana:Value() / 100 ) and minion.isEnemy then
+				if Qdamage >= minion.health then
+					Control.CastSpell(HK_Q,minion)																																					--Last Hit
 				end
-				local QMelee = (({60, 85, 110, 135, 160})[level] * 1.5 )
-				if myHero.pos:DistanceTo(minion.pos) < 170 and self.Menu.Lasthit.UseQ:Value() and (myHero.mana/myHero.maxMana >= self.Menu.Lasthit.Mana:Value() / 100 ) and minion.isEnemy then
-					if QMelee >= minion.health then
-						Control.CastSpell(HK_Q,minion)
-					end
+			end
+			local QMelee = (({60, 85, 110, 135, 160})[level] * 1.5 )
+			if myHero.pos:DistanceTo(minion.pos) < 170 and self.Menu.Lasthit.UseQ:Value() and (myHero.mana/myHero.maxMana >= self.Menu.Lasthit.Mana:Value() / 100 ) and minion.isEnemy then
+				if QMelee >= minion.health then
+					Control.CastSpell(HK_Q,minion)
 				end
-      		end
+			end
+      		
 		end
 	end
 end
@@ -118,24 +117,21 @@ function Talon:Clear()
 	if self.Menu.Clear.Usage:Value() == false then return end
 	for i = 1, Game.MinionCount() do
 	local minion = Game.Minion(i)
-		if  minion.team == 200 then
-			if self:IsValidTarget(minion,550) and Ready(_Q) and myHero.pos:DistanceTo(minion.pos) < 550 and self.Menu.Clear.UseQ:Value() and (myHero.mana/myHero.maxMana >= self.Menu.Clear.Mana:Value() / 100 ) and minion.isEnemy then
-				Control.CastSpell(HK_Q,minion.pos)
-			end
-			if self:IsValidTarget(minion,650) and Ready(_W) and myHero.pos:DistanceTo(minion.pos) < 650 and self.Menu.Clear.UseW:Value() and (myHero.mana/myHero.maxMana >= self.Menu.Clear.Mana:Value() / 100 ) and minion.isEnemy then
-				if CountEnemyMinions(650) >= self.Menu.Clear.WHit:Value() then
-					Control.CastSpell(HK_W,minion.pos)
-				end
-			end
+		if self:IsValidTarget(minion,550) and Ready(_Q) and myHero.pos:DistanceTo(minion.pos) < 550 and self.Menu.Clear.UseQ:Value() and (myHero.mana/myHero.maxMana >= self.Menu.Clear.Mana:Value() / 100 ) and minion.isEnemy then
+			Control.CastSpell(HK_Q,minion.pos)
 		end
-		if  minion.team == 300 then
-			if self:IsValidTarget(minion,550) and Ready(_Q) and myHero.pos:DistanceTo(minion.pos) < 550 and self.Menu.Clear.UseQ:Value() and (myHero.mana/myHero.maxMana >= self.Menu.Clear.Mana:Value() / 100 ) and minion.isEnemy then
-				Control.CastSpell(HK_Q,minion.pos)
-			end
-			if self:IsValidTarget(minion,650) and Ready(_W) and myHero.pos:DistanceTo(minion.pos) < 650 and self.Menu.Clear.UseW:Value() and (myHero.mana/myHero.maxMana >= self.Menu.Clear.Mana:Value() / 100 ) and minion.isEnemy then
+		if self:IsValidTarget(minion,650) and Ready(_W) and myHero.pos:DistanceTo(minion.pos) < 650 and self.Menu.Clear.UseW:Value() and (myHero.mana/myHero.maxMana >= self.Menu.Clear.Mana:Value() / 100 ) and minion.isEnemy then
+			if CountEnemyMinions(650) >= self.Menu.Clear.WHit:Value() then
 				Control.CastSpell(HK_W,minion.pos)
 			end
 		end
+		if self:IsValidTarget(minion,550) and Ready(_Q) and myHero.pos:DistanceTo(minion.pos) < 550 and self.Menu.Clear.UseQ:Value() and (myHero.mana/myHero.maxMana >= self.Menu.Clear.Mana:Value() / 100 ) and minion.isEnemy then
+			Control.CastSpell(HK_Q,minion.pos)
+		end
+		if self:IsValidTarget(minion,650) and Ready(_W) and myHero.pos:DistanceTo(minion.pos) < 650 and self.Menu.Clear.UseW:Value() and (myHero.mana/myHero.maxMana >= self.Menu.Clear.Mana:Value() / 100 ) and minion.isEnemy then
+			Control.CastSpell(HK_W,minion.pos)
+		end
+		
 	end
 end
 

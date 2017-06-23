@@ -77,19 +77,18 @@ function Vladimir:LastHit()
 		local level = myHero:GetSpellData(_Q).level	
   		for i = 1, Game.MinionCount() do
 			local minion = Game.Minion(i)
-			if  minion.team == 200 then
-				local Qbuffed = (({148, 185, 222, 259, 296})[level] + 1.11 * myHero.ap)
-				local Qdamage = (({80, 100, 120, 140, 160})[level] + 0.6 * myHero.ap)
-				if myHero.pos:DistanceTo(minion.pos) < 600 and self.Menu.Lasthit.UseQ:Value() and minion.isEnemy and self.HasBuff(myHero,"vladimirqfrenzy") then
-					if Qbuffed >= minion.health then
-						Control.CastSpell(HK_Q,minion)
-					end					
-				elseif myHero.pos:DistanceTo(minion.pos) < 600 and self.Menu.Lasthit.UseQ:Value() and minion.isEnemy then
-					if Qdamage >= minion.health then
-						Control.CastSpell(HK_Q,minion)																																					--Last Hit
-					end
-				end				
-      		end
+			local Qbuffed = (({148, 185, 222, 259, 296})[level] + 1.11 * myHero.ap)
+			local Qdamage = (({80, 100, 120, 140, 160})[level] + 0.6 * myHero.ap)
+			if myHero.pos:DistanceTo(minion.pos) < 600 and self.Menu.Lasthit.UseQ:Value() and minion.isEnemy and self.HasBuff(myHero,"vladimirqfrenzy") then
+				if Qbuffed >= minion.health then
+					Control.CastSpell(HK_Q,minion)
+				end					
+			elseif myHero.pos:DistanceTo(minion.pos) < 600 and self.Menu.Lasthit.UseQ:Value() and minion.isEnemy then
+				if Qdamage >= minion.health then
+					Control.CastSpell(HK_Q,minion)																																					--Last Hit
+				end
+			end				
+      		
 		end
 	end
 end
@@ -98,16 +97,15 @@ function Vladimir:Clear()
 	if self.Menu.Clear.Usage:Value() == false or self.chargeE == true then return end
 	for i = 1, Game.MinionCount() do
 	local minion = Game.Minion(i)
-		if  minion.team == 200 or minion.team == 300 then
-			if self:IsValidTarget(minion,600) and Ready(_Q) and myHero.pos:DistanceTo(minion.pos) < 600 and self.Menu.Clear.UseQ:Value() and minion.isEnemy then
+		if self:IsValidTarget(minion,600) and Ready(_Q) and myHero.pos:DistanceTo(minion.pos) < 600 and self.Menu.Clear.UseQ:Value() and minion.isEnemy then
 				Control.CastSpell(HK_Q,minion.pos)
 			end
 			if self:IsValidTarget(minion,600) and Ready(_E) and myHero.pos:DistanceTo(minion.pos) < 600 and self.Menu.Clear.UseE:Value() and minion.isEnemy then
 				if CountEnemyMinions(600) >= self.Menu.Clear.EHit:Value() then
 					Control.CastSpell(HK_E)
 				end
-			end
 		end
+		
 	end
 end
 
