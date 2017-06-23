@@ -67,7 +67,7 @@ end
 
 function Vladimir:Harass()
 	if _G.SDK.TargetSelector:GetTarget(Q.range) == nil then return end
-	if self.Menu.Harass.UseQ:Value() then
+	if self.Menu.Harass.UseQ:Value() and Ready(_Q) then
 		local Qtarg = _G.SDK.TargetSelector:GetTarget(Q.range)												--Harass
 		Control.CastSpell(HK_Q, Qtarg)
 	end
