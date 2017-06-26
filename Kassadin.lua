@@ -102,6 +102,9 @@ end
 function Kassadin:__init()
   self.passiveTracker = 0
   self.stacks = 0
+  qdmg = 0
+  edmg = 0
+  rdmg = 0
   PrintChat("Time to Silence Your Mother")
   self:LoadSpells()
   self:LoadMenu()                                             --Init
@@ -179,7 +182,7 @@ end
 function Kassadin:Draw()
   if myHero.dead then return end
   if(self.Menu.Drawing.DrawR:Value())then
-    Draw.Circle(myHero, R.range, 3, Draw.Color(255, 225, 255, 10))
+    Draw.Circle(myHero, 500, 3, Draw.Color(255, 225, 255, 10))
   end                                                 --OnDraw
   if(self.Menu.Drawing.DrawQ:Value())then
     Draw.Circle(myHero, Q.range, 3, Draw.Color(225, 225, 0, 10))
@@ -211,6 +214,8 @@ function Kassadin:Tick()
   if myHero.dead then return end
     self:OnBuff(myHero)
     self:Killsteal()
+    level = myHero:GetSpellData(_Q).level
+    Qdamage = (({65, 95, 125, 155, 185})[level] + 0.7 * myHero.ap)
     if self.Menu.Lasthit.AutoQ:Value() then
       self:LastHit()
     end
@@ -311,9 +316,10 @@ function Kassadin:Harass()
 end
 
 function Kassadin:Clear()
+   
   for i = 1, Game.MinionCount() do
     local minion = Game.Minion(i)
-    local Qdamage = (({65, 95, 125, 155, 185})[level] + 0.7 * myHero.ap)
+    --local Qdamage = (({65, 95, 125, 155, 185})[level] + 0.7 * myHero.ap)
     if Qdamage >= minion.health then
       if self:ValidTarget(minion,550) and Ready(_Q) and myHero.pos:DistanceTo(minion.pos) < 550 and self.Menu.Clear.UseQ:Value() and (myHero.mana/myHero.maxMana >= self.Menu.Clear.Mana:Value() / 100 ) and minion.isEnemy and myHero.pos:DistanceTo(minion.pos) > myHero.range then
         Control.CastSpell(HK_Q,minion)
@@ -331,10 +337,8 @@ end
 
 function Kassadin:LastHit()
   if Ready(_Q) then
-    local level = myHero:GetSpellData(_Q).level 
     for i = 1, Game.MinionCount() do
-      local minion = Game.Minion(i)
-      local Qdamage = (({65, 95, 125, 155, 185})[level] + 0.7 * myHero.ap)
+      local minion = Game.Minion(i)      
       if Qdamage >= minion.health then
         if myHero.pos:DistanceTo(minion.pos) < 600 and self.Menu.Lasthit.UseQ:Value() and minion.isEnemy and myHero.pos:DistanceTo(minion.pos) > myHero.range then
           Control.CastSpell(HK_Q,minion)
@@ -349,29 +353,38 @@ function Kassadin:Killsteal()
     if enemy ~= nil then
       local hp = enemy.health
       local dist = myHero.pos:DistanceTo(enemy.pos)
-      if (Ready(_Q) and self.Menu.KS.UseQ:Value()) then qdmg = getdmg("Q", enemy) end
+      if (Ready(_Q) and self.Menu.KS.UseQ:Value()) then 
+        qdmg = getdmg("Q", enemy) 
+      else qdmg = 0 
+      end
       --if (Ready(_W) and self.Menu.KS.UseW:Value()) then wdmg = getdmg("W", enemy) end
-      if (Ready(_E) and self.Menu.KS.UseE:Value()) then edmg = getdmg("E", enemy) end
-      if (Ready(_R) and self.Menu.KS.UseR:Value()) then rdmg = getdmg("R", enemy) end
-      --PrintChat(qdmg)
+      if (Ready(_E) and self.Menu.KS.UseE:Value()) then 
+        edmg = getdmg("E", enemy) 
+      else edmg = 0 
+      end
+      if (Ready(_R) and self.Menu.KS.UseR:Value()) then 
+        rdmg = getdmg("R", enemy) 
+      else rdmg = 0 
+      end
+      
       if dist < Q.range and qdmg > hp then
         Control.CastSpell(HK_Q, enemy)
         return
       end
-      if dist < E.range and edmg > hp then
+      if dist < E.range and edmg > hp and self.passiveTracker >= 1 then
         Control.CastSpell(HK_E, enemy.pos)
         return
       end
-      if dist < R.range and rdmg > hp then
+      if dist < 600 and rdmg+qdmg > hp then
         Control.CastSpell(HK_R, enemy.pos)
         return
       end
-      if dist < E.range and qdmg+edmg > hp then
+      if dist < E.range and qdmg+edmg > hp and self.passiveTracker >= 1 then
         Control.CastSpell(HK_E, enemy.pos)
         Control.CastSpell(HK_Q, enemy)
         return
       end
-      if dist < R.range and qdmg+edmg+rdmg > hp then
+      if dist < R.range and qdmg+edmg+rdmg > hp and self.passiveTracker >= 1 then
         Control.CastSpell(HK_R, enemy.pos)
         Control.CastSpell(HK_E, enemy.pos)
         Control.CastSpell(HK_Q, enemy)
