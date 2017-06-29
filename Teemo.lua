@@ -57,7 +57,7 @@ function Teemo:LoadMenu()
   	self.Menu.Harass:MenuElement({id = "UseQ", name = "[Q] Blinding Dart", value = true, leftIcon = Icons.Q})
 	
 	--Drawing
-	self.Menu:MenuElement({type = MENU, id = "Drawing", name = "BronzeSeries: Drawings"})
+	self.Menu:MenuElement({type = MENU, id = "Drawing", name = "Drawings"})
 	self.Menu.Drawing:MenuElement({id = "Q", name = "Draw [Q] Range", value = true, leftIcon = Icons.Q})
 	self.Menu.Drawing:MenuElement({id = "R", name = "Draw [R] Range", value = true, leftIcon = Icons.R})
 
