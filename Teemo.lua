@@ -64,6 +64,7 @@ function Teemo:LoadMenu()
 end
 
 function Teemo:Tick()
+	if myHero.dead then return end
 	if self.Menu.Harass.AutoQ:Value() then
       self:Harass()
     end
