@@ -230,7 +230,7 @@ function Vayne:LoadMenu()
 	self.Menu.Logic:MenuElement({id = "Push", name = "Condemn Distance", value = 450, min = 400, max = 475, step = 25})
 	self.Menu.Logic:MenuElement({id = "InvTime", name = "Min Invisible Time Before Autos", value = 0.6, min = 0.1, max = 0.9, step = 0.1})
 	self.Menu:MenuElement({id = "AutoE", name = "Auto Condemn", value = true, leftIcon = Icons.E})
-	self.Menu:MenuElement({id = "Interrupt", name = "Use [E] to Interrupt *BETA*", value = true})
+	self.Menu:MenuElement({id = "Interrupt", name = "Use [E] to Interrupt *BETA*", value = false})
 	self.Menu:MenuElement({id = "Peel", name = "Prestigious SelfPeel", value = true})
 	self.Menu:MenuElement({name = "#----------------------Script Information----------------------#", drop = {" "}})
 	self.Menu:MenuElement({name = "Script Version", drop = {"v1.0"}})
@@ -279,7 +279,7 @@ function Vayne:Interrupt()
 		if not target.dead and target.isEnemy and GetDistanceSqr(target.pos, myHero.pos) < 302500 then
 			if target.isChanneling then
 				DelayAction(function()
-					if target.isChanneling then
+					if target.isChanneling and GetDistanceSqr(target.pos, myHero.pos) < 302500 then
 						Control.CastSpell(HK_E,target)
 					end	
 				end,1)
