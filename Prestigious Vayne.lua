@@ -495,7 +495,7 @@ function Vayne:DisableAtk()
 	elseif Orb == 2 then
 		_G.SDK.Orbwalker:SetAttack(false)
 	elseif Orb == 3 then 
-		GOS:BlockAttack(true)
+		 _G.GOS.BlockAttack = true
 	end		
 end
 
@@ -505,7 +505,7 @@ function Vayne:EnableAtk()
 	elseif Orb == 2 then
 		_G.SDK.Orbwalker:SetAttack(true)
 	elseif Orb == 3 then 
-		GOS:BlockAttack(false)
+		_G.GOS.BlockAttack = false
 	end		
 end		
 
