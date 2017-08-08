@@ -265,7 +265,8 @@ function Vayne:SelfPeel()
 	for i = 1, Game.HeroCount() do
 		local Hero = Game.Hero(i)
 		if not Hero.dead and Hero.isEnemy and GetDistanceSqr(Hero.pos, myHero.pos) < 122500 then			
-			Control.CastSpell(HK_E,Hero)				
+			Control.CastSpell(HK_E,Hero)
+			break
 		end
 	end
 	
