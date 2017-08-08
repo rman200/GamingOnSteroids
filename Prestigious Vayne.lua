@@ -1,8 +1,3 @@
-local function GetDistanceSqr(p1, p2)
-    local dx, dz = p1.x - p2.x, p1.z - p2.z 
-    return dx * dx + dz * dz
-end
-    
 local sqrt = math.sqrt
 local function GetDistance(p1, p2)
     return sqrt(GetDistanceSqr(p1, p2))
