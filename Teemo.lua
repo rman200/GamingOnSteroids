@@ -1,3 +1,4 @@
+local menu = 1
 class "Teemo"
 
 function GetDistanceSqr(p1, p2)
@@ -14,6 +15,8 @@ function GetDistance(p1, p2)
 end
 
 function Teemo:__init()
+	if menu ~= 1 then return end
+	menu = 2
 	self:LoadSpells()
 	self:LoadMenu()
 	Callback.Add("Tick", function() self:Tick() end)
