@@ -1,3 +1,4 @@
+local menu = 1
 class "Vladimir"
 
 require = 'DamageLib'
@@ -16,6 +17,8 @@ end
 
 
 function Vladimir:__init()
+	if menu ~= 1 then return end
+	menu = 2
 	if myHero.charName ~= "Vladimir" then return end
 	PrintChat("Count Vladimir is ready")
 	self:LoadSpells()
