@@ -1,3 +1,4 @@
+local menu = 1
 class "Kassadin"
 
 require 'DamageLib'
@@ -100,6 +101,8 @@ function CalculateDamageOffsets()
 end
 ]]
 function Kassadin:__init()
+  if menu ~= 1 then return end
+  menu = 2
   self.passiveTracker = 0
   self.stacks = 0
   qdmg = 0
