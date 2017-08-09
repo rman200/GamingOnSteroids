@@ -1,3 +1,4 @@
+local menu = 1
 class "Talon"
 
 require = 'DamageLib'
@@ -16,6 +17,8 @@ end
 
 
 function Talon:__init()
+	if menu ~= 1 then return end
+	menu = 2
 	if myHero.charName ~= "Talon" then return end
 	PrintChat("Welcome to the Noxian Way Of Life")
 	self:LoadSpells()
