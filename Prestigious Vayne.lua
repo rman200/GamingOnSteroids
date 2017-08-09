@@ -23,6 +23,7 @@ local Orb = 3
 local TEAM_ALLY = myHero.team
 local TEAM_JUNGLE = 300
 local TEAM_ENEMY = 300 - TEAM_ALLY
+local menu = 1
 
 
 local function GetTarget(range) --temp version
@@ -163,6 +164,8 @@ local _OnWaypoint = {}
 
 
 function Vayne:__init()
+	if menu ~= 1 then return end
+	menu = 2
 	if myHero.charName ~= "Vayne" then return end
 	self:LoadSpells()
   	self:LoadMenu()
