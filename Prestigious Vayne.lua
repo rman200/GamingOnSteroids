@@ -26,6 +26,7 @@ local TEAM_ENEMY = 300 - TEAM_ALLY
 local menu = 1
 
 
+
 local function GetTarget(range) --temp version
 	local target = nil 
 		if Orb == 1 then
@@ -33,7 +34,7 @@ local function GetTarget(range) --temp version
 		elseif Orb == 2 then 
 			target = _G.SDK.TargetSelector:GetTarget(range)
 		elseif Orb == 3 then
-			target = GOS:GetTarget(range)
+			target = _G.GOS:GetTarget(range)
 		end
 		return target 
 end
@@ -72,7 +73,7 @@ function GetMode()
 			return "Flee"
 		end
 	else
-		return GOS.GetMode()
+		return GOS:GetMode()
 	end
 end
 
@@ -216,9 +217,9 @@ function Vayne:LoadMenu()
 	--self.Menu.Harass:MenuElement({id = "UseE", name = "[E] To Proc 3rd Hit", value = true, leftIcon = Icons.E})
 	--self.Menu.Harass:MenuElement({id = "Mana", name = "Min Mana to Harass(%)", value = 65, min = 0, max = 100})
 --Drawing Menu
-	self.Menu:MenuElement({type = MENU, id = "Drawing", name = "Drawings"})
+	--self.Menu:MenuElement({type = MENU, id = "Drawing", name = "Drawings"})
 	--self.Menu.Drawing:MenuElement({id = "DrawQ", name = "Draw [Q] Range", value = true, leftIcon = Icons.Q})
-	self.Menu.Drawing:MenuElement({id = "DrawR", name = "Draw [R] Range", value = true, leftIcon = Icons.R})
+	--self.Menu.Drawing:MenuElement({id = "DrawR", name = "Draw [R] Range", value = true, leftIcon = Icons.R})
 --Logic Menu
 	self.Menu:MenuElement({type = MENU, id = "Logic", name = "Logic Menu"})
 	self.Menu.Logic:MenuElement({id = "Q", name = "[Q] Logic", value = 1,drop = {"Prestigious Smart", "Agressive", "Kite[To Mouse]"}, leftIcon = Icons.Q})
@@ -513,13 +514,14 @@ function Vayne:ForceTarget(target)
 		EOW:ForceTarget(target)
 	elseif Orb == 2 then
 		_G.SDK.Orbwalker.ForceTarget = target	
-	elseif Orb == 3 then 
-		GOS:ForceTarget(target)
+	elseif Orb == 3 then
+		if target == nil then _G.GOS.ForceTarget = nil return end 
+		if not target.dead then _G.GOS.ForceTarget = target end
 	end		
 end
 
-function Vayne:Combo()
-	self:ForceTarget(nil)	
+function Vayne:Combo()	
+	self:ForceTarget(nil)
 	local activeSpell = myHero.activeSpell
 	local target = GetTarget(550)
     if activeSpell.valid and activeSpell.spellWasCast == false then return end
@@ -664,7 +666,7 @@ end]]
 function Vayne:Draw() --debug only
 	--if Ready(_E) and EndLineDraw ~= nil then EndLineDraw:__draw(30, Draw.Color(255, 50, 000, 205)) end
 	--PrintChat(self.Menu.Logic.Q:Value())
-	--PrintChat(GetInvTime())
+	--PrintChat(_G.GOS:CanAttack())
 		
 end
 
