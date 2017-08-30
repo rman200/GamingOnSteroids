@@ -200,7 +200,8 @@ function Vayne:LoadSpells()
   R = { range = myHero:GetSpellData(_R).range, delay = myHero:GetSpellData(_R).delay, speed = myHero:GetSpellData(_R).speed, width = myHero:GetSpellData(_R).width }
 end
 
-function Vayne:LoadMenu()                     
+function Vayne:LoadMenu()
+--[[
 --MainMenu
 	self.Menu = MenuElement({type = MENU, id = "Vayne", name = "Prestigious Vayne", leftIcon = Icons["VayneIcon"]})
 --ComboMenu
@@ -229,6 +230,42 @@ function Vayne:LoadMenu()
 	self.Menu.Logic:MenuElement({id = "Push", name = "Condemn Distance", value = 450, min = 400, max = 475, step = 25})
 	self.Menu.Logic:MenuElement({id = "InvTime", name = "Min Invisible Time Before Autos", value = 0.6, min = 0.1, max = 0.9, step = 0.1})
 	self.Menu:MenuElement({id = "AutoE", name = "Auto Condemn", value = true, leftIcon = Icons.E})
+	self.Menu:MenuElement({id = "Interrupt", name = "Use [E] to Interrupt *BETA*", value = false})
+	self.Menu:MenuElement({id = "Peel", name = "Prestigious SelfPeel", value = true})
+	self.Menu:MenuElement({name = "#----------------------Script Information----------------------#", drop = {" "}})
+	self.Menu:MenuElement({name = "Script Version", drop = {"v1.0"}})
+	self.Menu:MenuElement({name = "League Version", drop = {"7.15"}})
+	self.Menu:MenuElement({name = "Author", drop = {"RMAN"}})
+	
+]]
+	--MainMenu
+	self.Menu = MenuElement({type = MENU, id = "Vayne", name = "Prestigious Vayne"})
+--ComboMenu
+	self.Menu:MenuElement({type = MENU, id = "Combo", name = "Combo"})
+	self.Menu.Combo:MenuElement({id = "UseQ", name = "[Q] Tumble", value = true})	
+	self.Menu.Combo:MenuElement({id = "UseE", name = "[E] Condemn", value = true})
+	self.Menu.Combo:MenuElement({id = "UseR", name = "[R] Final Hour", value = false})
+	self.Menu.Combo:MenuElement({id = "MinR", name = "Min Enemies to Use Ult", value = 2, min = 1, max = 5}) 
+	self.Menu.Combo:MenuElement({id = "BOTRK", name = "Blade of the Ruined King", value = 80, min = 1, max = 100})
+--HarassMenu
+	--self.Menu:MenuElement({type = MENU, id = "Harass", name = "Harass"})
+	self.Menu:MenuElement({id = "Mode", name = "Harass", value = 1,drop = {"None", "AA -> AA -> Q", "AA -> AA -> E", "AA -> Q -> E"}})
+	--self.Menu.Harass:MenuElement({id = "UseQ", name = "[Q] To Proc 3rd hit", value = true, leftIcon = Icons.Q})	
+	--self.Menu.Harass:MenuElement({id = "UseE", name = "[E] To Proc 3rd Hit", value = true, leftIcon = Icons.E})
+	--self.Menu.Harass:MenuElement({id = "Mana", name = "Min Mana to Harass(%)", value = 65, min = 0, max = 100})
+--Drawing Menu
+	--self.Menu:MenuElement({type = MENU, id = "Drawing", name = "Drawings"})
+	--self.Menu.Drawing:MenuElement({id = "DrawQ", name = "Draw [Q] Range", value = true, leftIcon = Icons.Q})
+	--self.Menu.Drawing:MenuElement({id = "DrawR", name = "Draw [R] Range", value = true, leftIcon = Icons.R})
+--Logic Menu
+	self.Menu:MenuElement({type = MENU, id = "Logic", name = "Logic Menu"})
+	self.Menu.Logic:MenuElement({id = "Q", name = "[Q] Logic", value = 1,drop = {"Prestigious Smart", "Agressive", "Kite[To Mouse]"}})
+	self.Menu.Logic:MenuElement({id = "W", name = "[W] Logic", value = true, leftIcon = Icons.W})
+	self.Menu.Logic:MenuElement({id = "E", name = "[E] Logic", value = 1,drop = {"Prestigious", "PRADA SMART", "PRADA PERFECT", "OLD PRADA", "MARKSMAN", "SHARPSHOOTER", "GOSU", "VHR", "FASTEST"}})
+	self.Menu.Logic:MenuElement({id = "Chance", name = "Condemn Hitchance", value = 50, min = 0, max = 100})
+	self.Menu.Logic:MenuElement({id = "Push", name = "Condemn Distance", value = 450, min = 400, max = 475, step = 25})
+	self.Menu.Logic:MenuElement({id = "InvTime", name = "Min Invisible Time Before Autos", value = 0.6, min = 0.1, max = 0.9, step = 0.1})
+	self.Menu:MenuElement({id = "AutoE", name = "Auto Condemn", value = true})
 	self.Menu:MenuElement({id = "Interrupt", name = "Use [E] to Interrupt *BETA*", value = false})
 	self.Menu:MenuElement({id = "Peel", name = "Prestigious SelfPeel", value = true})
 	self.Menu:MenuElement({name = "#----------------------Script Information----------------------#", drop = {" "}})
